@@ -1,0 +1,6 @@
+@MehmanFoods.Endpoints_HostAddress = http://localhost:5000
+
+GET {{MehmanFoods.Endpoints_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
