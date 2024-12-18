@@ -13,9 +13,13 @@ namespace MehmanFoods.Core.Entities
         public int ProductQuantity { get; set; }
         public decimal ProductPrice { get; set; }
         public decimal ProductWholeSalePrice { get; set; }
+        public decimal ProductBuyRatePrice { get; set; }
+        public decimal OpeningStockRate {  get; set; }
+        public int MinimumStockAlert { get; set; }
         public DateTime ProductionDate { get; set; }
         public DateTime ExpiryDate { get; set; }
         public string Symbol { get; set; }
+        public string Description { get; set; }
         public ICollection<OrderDetail> OrderDetails { get; set; }
         public ICollection<Batch> Batches { get; set; }
         public ICollection<SaleProduct> SaleProducts { get; set; }

@@ -33,9 +33,10 @@ namespace MehmanFoods.Service
             throw new NotImplementedException();
         }
 
-        public Task<IEnumerable<Product>> GetAllProductsAsync()
+        public async Task<IEnumerable<ProductFetchDto>> GetAllProductsAsync()
         {
-            throw new NotImplementedException();
+            var product = await _productRepository.GetAllProductsAsync();
+            return _mapper.Map<IEnumerable<ProductFetchDto>>(product);
         }
 
         public Task<Product> GetProductByIdAsync(int productId)
@@ -52,19 +53,24 @@ namespace MehmanFoods.Service
                 throw new KeyNotFoundException($"Product with ID {updateProductDto.ProductId} not found.");
             }
 
-            if (updateProductDto.ExpiryDate < updateProductDto.ProductionDate)
-            {
-                throw new ArgumentException("Expiry date cannot be earlier than the production date.");
-            }
+            //if (updateProductDto.ExpiryDate < updateProductDto.ProductionDate)
+            //{
+            //    throw new ArgumentException("Expiry date cannot be earlier than the production date.");
+            //}
 
             var updateProduct = _mapper.Map<Product>(updateProductDto);
 
-            existingProduct.ProductQuantity = updateProduct.ProductQuantity;
-            existingProduct.ProductPrice = updateProduct.ProductPrice;
-            existingProduct.ProductionDate = updateProduct.ProductionDate;
-            existingProduct.ExpiryDate = updateProduct.ExpiryDate;
-            existingProduct.ProductName = updateProduct.ProductName;
-            existingProduct.ProductWholeSalePrice = updateProduct.ProductWholeSalePrice;
+            existingProduct.ProductQuantity = updateProduct.ProductQuantity;//
+            existingProduct.ProductPrice = updateProduct.ProductPrice;//
+            existingProduct.ProductionDate = updateProduct.ProductionDate;//
+            existingProduct.ExpiryDate = updateProduct.ExpiryDate;//
+            existingProduct.ProductName = updateProduct.ProductName;//
+            existingProduct.ProductWholeSalePrice = updateProduct.ProductWholeSalePrice;//
+            existingProduct.ProductBuyRatePrice = updateProduct.ProductBuyRatePrice;//
+            existingProduct.OpeningStockRate = updateProduct.OpeningStockRate;//
+            existingProduct.MinimumStockAlert = updateProduct.MinimumStockAlert;//
+            existingProduct.Description = updateProduct.Description;//
+            existingProduct.Symbol = updateProduct.Symbol;//
 
             await _productRepository.UpdateProductAsync(existingProduct);
         }

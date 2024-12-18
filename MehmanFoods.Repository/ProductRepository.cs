@@ -1,5 +1,6 @@
 ﻿using MehmanFoods.Core.Entities;
 using MehmanFoods.Core.IRepository;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -28,9 +29,9 @@ namespace MehmanFoods.Repository
             throw new NotImplementedException();
         }
 
-        public Task<IEnumerable<Product>> GetAllProductsAsync()
+        public async Task<IEnumerable<Product>> GetAllProductsAsync()
         {
-            throw new NotImplementedException();
+            return await _context.Products.ToListAsync();
         }
 
         public async Task<Product> GetProductByIdAsync(int productId)

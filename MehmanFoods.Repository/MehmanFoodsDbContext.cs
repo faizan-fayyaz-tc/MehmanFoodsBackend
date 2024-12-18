@@ -71,6 +71,14 @@ namespace MehmanFoods.Repository
             .Property(p => p.ProductWholeSalePrice)
             .HasColumnType("decimal(18,2)");
 
+            modelBuilder.Entity<Product>()
+            .Property(p => p.ProductBuyRatePrice)
+            .HasColumnType("decimal(18,2)");
+
+            modelBuilder.Entity<Product>()
+            .Property(p => p.OpeningStockRate)
+            .HasColumnType("decimal(18,2)");
+
             modelBuilder.Entity<Sale>()
             .Property(s => s.TotalAmount)
             .HasColumnType("decimal(18,2)");
