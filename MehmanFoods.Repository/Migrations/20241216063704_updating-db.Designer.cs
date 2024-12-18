@@ -4,6 +4,7 @@ using MehmanFoods.Repository;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace MehmanFoods.Repository.Migrations
 {
     [DbContext(typeof(MehmanFoodsDbContext))]
-    partial class MehmanFoodsDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241216063704_updating-db")]
+    partial class updatingdb
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -301,21 +304,8 @@ namespace MehmanFoods.Repository.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ProductId"));
 
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<DateTime>("ExpiryDate")
                         .HasColumnType("datetime2");
-
-                    b.Property<int>("MinimumStockAlert")
-                        .HasColumnType("int");
-
-                    b.Property<decimal>("OpeningStockRate")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<decimal>("ProductBuyRatePrice")
-                        .HasColumnType("decimal(18,2)");
 
                     b.Property<string>("ProductName")
                         .IsRequired()

@@ -12,7 +12,7 @@ namespace MehmanFoods.Core.IService
     {
         Task AddProductAsync(ProductCreateDto productCreateDto);
         Task<Product> GetProductByIdAsync(int productId);
-        Task<IEnumerable<Product>> GetAllProductsAsync();
+        Task<IEnumerable<ProductFetchDto>> GetAllProductsAsync();
         Task UpdateProductAsync(UpdateProductDto updateProductDto);
         Task DeleteProductAsync(int productId);
     }

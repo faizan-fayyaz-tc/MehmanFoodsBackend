@@ -14,6 +14,7 @@ namespace MehmanFoods.Endpoints.MehmanFoodsControllers
         {
             _productService = productService;
         }
+
         [HttpPost("CreateProduct")]
         public async Task<ActionResult> CreateProduct([FromBody] ProductCreateDto productCreateDto)
         {
@@ -42,11 +43,18 @@ namespace MehmanFoods.Endpoints.MehmanFoodsControllers
             }
         }
 
-        [HttpPut("Update-Journal{id}")]
+        [HttpPut("update-product")]
         public async Task<IActionResult> UpdateProduct([FromBody] UpdateProductDto updateProductDto)
         {
             await _productService.UpdateProductAsync(updateProductDto);
             return Ok();
+        }
+
+        [HttpGet("fetch-product")]
+        public async Task<IActionResult> GetAllProductAsync()
+        {
+            var productFetchDto =  await _productService.GetAllProductsAsync();
+            return Ok(productFetchDto);
         }
     }
 }
