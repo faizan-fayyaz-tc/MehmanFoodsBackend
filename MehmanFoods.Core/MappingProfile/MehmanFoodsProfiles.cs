@@ -33,6 +33,8 @@ namespace MehmanFoods.Core.MappingProfile
             CreateMap<UpdateProductDto, Product>();
             CreateMap<Customer, CustomerCreateDto>();
             CreateMap<CustomerCreateDto, Customer>();
+            CreateMap<Customer, CustomerFetchDto>();
+            CreateMap<CustomerFetchDto, Customer>();
             CreateMap<Batch, BatchCreateDto>();
             CreateMap<BatchCreateDto, Batch>();
             CreateMap<BatchIngredient, BatchIngredientCreateDto>();

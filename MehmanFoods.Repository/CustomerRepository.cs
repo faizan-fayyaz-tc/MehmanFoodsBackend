@@ -29,14 +29,14 @@ namespace MehmanFoods.Repository
             throw new NotImplementedException();
         }
 
-        public Task<IEnumerable<Customer>> GetAllCustomersAsync()
+        public async Task<IEnumerable<Customer>> GetAllCustomersAsync()
         {
-            throw new NotImplementedException();
+            return await _context.Customers.ToListAsync();
         }
 
-        public Task<Product> GetCustomerByIdAsync(int customerId)
+        public async Task<Customer> GetCustomerByIdAsync(int customerId)
         {
-            throw new NotImplementedException();
+            return await _context.Customers.FindAsync(customerId);
         }
 
         public Task UpdateCustomerAsync(Customer customer)

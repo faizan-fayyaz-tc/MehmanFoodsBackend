@@ -21,7 +21,7 @@ namespace MehmanFoods.Endpoints.MehmanFoodsControllers
             if (customerCreateDto != null)
             {
                 await _customerService.AddCustomerAsync(customerCreateDto);
-                return CreatedAtAction(nameof(GetCustomerById), new { id = customerCreateDto.CustomerId }, customerCreateDto);
+                return CreatedAtAction(nameof(GetCustomerByIdAsync), new { id = customerCreateDto.CustomerId }, customerCreateDto);
             }
             else
             {
@@ -30,9 +30,23 @@ namespace MehmanFoods.Endpoints.MehmanFoodsControllers
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<ProductCreateDto>> GetCustomerById(int id)
+        public async Task<ActionResult<CustomerFetchDto>> GetCustomerByIdAsync(int id)
         {
             var customer = await _customerService.GetCustomerByIdAsync(id);
+            if (customer != null)
+            {
+                return Ok(customer);
+            }
+            else
+            {
+                return NotFound("customer not found");
+            }
+        }
+
+        [HttpGet("FetchAllCustomers")]
+        public async Task<ActionResult<CustomerFetchDto>> GetAllCustomersAsync()
+        {
+            var customer = await _customerService.GetAllCustomersAsync();
             if (customer != null)
             {
                 return Ok(customer);
