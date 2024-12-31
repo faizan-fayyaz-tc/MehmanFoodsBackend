@@ -24,9 +24,18 @@ namespace MehmanFoods.Repository
             await _context.SaveChangesAsync();
         }
 
-        public Task DeleteCustomerAsync(int customerId)
+        public async Task DeleteCustomerAsync(int customerId)
         {
-            throw new NotImplementedException();
+            var customer = await _context.Customers.FindAsync(customerId);
+
+            if (customer == null)
+            {
+                throw new Exception($"Customer with ID {customerId} not found.");
+            }
+
+            _context.Customers.Remove(customer);
+
+            await _context.SaveChangesAsync();
         }
 
         public async Task<IEnumerable<Customer>> GetAllCustomersAsync()
@@ -39,9 +48,10 @@ namespace MehmanFoods.Repository
             return await _context.Customers.FindAsync(customerId);
         }
 
-        public Task UpdateCustomerAsync(Customer customer)
+        public async Task UpdateCustomerAsync(Customer customer)
         {
-            throw new NotImplementedException();
+            _context.Customers.Update(customer);
+            await _context.SaveChangesAsync();
         }
     }
 }

@@ -30,9 +30,9 @@ namespace MehmanFoods.Service
             await _customerRepository.AddCustomerAsync(customer);
         }
 
-        public Task DeleteCustomerAsync(int customerId)
+        public async Task DeleteCustomerAsync(int customerId)
         {
-            throw new NotImplementedException();
+            await _customerRepository.DeleteCustomerAsync(customerId);
         }
 
         public async Task<IEnumerable<CustomerFetchDto>> GetAllCustomersAsync()
@@ -47,9 +47,26 @@ namespace MehmanFoods.Service
             return _mapper.Map<CustomerFetchDto>(customer);
         }
 
-        public Task UpdateCustomerAsync(CustomerCreateDto customerCreateDto)
+        public async Task UpdateCustomerAsync(CustomerUpdateDto customerUpdateDto)
         {
-            throw new NotImplementedException();
+            var existingCustomer = await _customerRepository.GetCustomerByIdAsync(customerUpdateDto.CustomerId);
+
+            if(existingCustomer != null)
+            {
+                existingCustomer.FullName = customerUpdateDto.FullName;
+                existingCustomer.PhoneNumber = customerUpdateDto.PhoneNumber;
+                existingCustomer.Email = customerUpdateDto.Email;
+                existingCustomer.Address = customerUpdateDto.Address;
+                existingCustomer.PreferredContactMethod = customerUpdateDto.PreferredContactMethod;
+                existingCustomer.IsActive = customerUpdateDto.IsActive;
+                existingCustomer.Notes = customerUpdateDto.Notes;
+
+                await _customerRepository.UpdateCustomerAsync(existingCustomer);
+            }
+            else
+            {
+                throw new KeyNotFoundException("Customer with the specified ID was not found.");
+            }
         }
     }
 }
