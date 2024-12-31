@@ -12,7 +12,6 @@ namespace MehmanFoods.Core.DTOs.Order
     public class OrderFetchDto
     {
         public int OrderId { get; set; }
-        // public Invoice Invoice { get; set; }
         public string InvoiceNo { get; set; }
         public string InvoiceTo { get; set; }
         public string PhoneNumber { get; set; }
@@ -23,8 +22,7 @@ namespace MehmanFoods.Core.DTOs.Order
         public decimal Balance { get; set; }
         public string PaymentStatus { get; set; }
         public int CustomerId { get; set; }
-        public CustomerFetchDto customerFetchDto { get; set; }
-        public ICollection<OrderDetailFetchDto> orderDetailFetchDto { get; set; }
-        //public ICollection<Sale> Sales { get; set; }
+        public CustomerFetchDto Customer { get; set; }
+        public ICollection<OrderDetailFetchDto> OrderDetails { get; set; }
     }
 }

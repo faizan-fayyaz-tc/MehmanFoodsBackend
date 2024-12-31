@@ -25,8 +25,12 @@ namespace MehmanFoods.Core.MappingProfile
             CreateMap<Invoice, InvoiceDto>();
             CreateMap<OrderCreateDto, Order>();
             CreateMap<Order, OrderCreateDto>();
+            CreateMap<OrderFetchDto, Order>();
+            CreateMap<Order, OrderFetchDto>();
             CreateMap<OrderDetail, OrderDetailDto>();
             CreateMap<OrderDetailDto, OrderDetail>();
+            CreateMap<OrderDetail, OrderDetailFetchDto>();
+            CreateMap<OrderDetailFetchDto, OrderDetail>();
             CreateMap<Product, ProductFetchDto>();
             CreateMap<ProductFetchDto, Product>();
             CreateMap<Product, UpdateProductDto>();

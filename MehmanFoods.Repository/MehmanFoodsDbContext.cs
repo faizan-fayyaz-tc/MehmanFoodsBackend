@@ -24,6 +24,7 @@ namespace MehmanFoods.Repository
         public DbSet<Unit> Units { get; set; }
         public DbSet<BatchNo> BatchesNo { get; set; }
 
+        public DbSet<PaymentStatus> paymentStatuses { get; set; }
 
         public MehmanFoodsDbContext() : base()
         { }

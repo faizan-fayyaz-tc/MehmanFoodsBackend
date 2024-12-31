@@ -20,9 +20,11 @@ namespace MehmanFoods.Service
         private readonly IProductRepository _productRepository;
         private readonly IOrderDetailRepository _orderDetailRepository;
         private readonly IInvoiceRepository _invoiceRepository;
+        private readonly ICustomerRepository _customerRepository;
+        private readonly IPaymentStatusService _paymentStatusService;
         private readonly IMapper _mapper;
 
-        public OrderService(IOrderRepository orderRepository, IInvoiceService invoiceService, IMapper mapper, IOrderDetailRepository orderDetailRepository, IInvoiceRepository invoiceRepository, IProductRepository productRepository)
+        public OrderService(IOrderRepository orderRepository, IInvoiceService invoiceService, IMapper mapper, IOrderDetailRepository orderDetailRepository, IInvoiceRepository invoiceRepository, IProductRepository productRepository, ICustomerRepository customerRepository, IPaymentStatusService paymentStatusService)
         {
             _orderRepository = orderRepository;
             _productRepository = productRepository;
@@ -30,6 +32,8 @@ namespace MehmanFoods.Service
             _orderDetailRepository = orderDetailRepository;
             _mapper = mapper;
             _invoiceRepository = invoiceRepository;
+            _customerRepository = customerRepository;
+            _paymentStatusService = paymentStatusService;
         }
 
         public async Task AddOrderAsync(OrderCreateDto orderCreateDto)
@@ -58,6 +62,19 @@ namespace MehmanFoods.Service
                     order.InvoiceNo = newInvoiceNumber;
                     order.CustomerId = orderCreateDto.CustomerId;
 
+                    var customer = await _customerRepository.GetCustomerByIdAsync(orderCreateDto.CustomerId);
+
+                    if (customer != null)
+                    {
+                        order.PhoneNumber = customer.PhoneNumber;  
+                        order.InvoiceTo = customer.FullName;      
+                        order.Location = customer.Address;            
+                    }
+                    else
+                    {
+                        throw new Exception("Customer not found");
+                    }
+
                     var newOrder = await _orderRepository.AddOrderAsync(order);
 
                     foreach (var orderDetailDto in orderCreateDto.OrderDetailsDto)
@@ -75,6 +92,15 @@ namespace MehmanFoods.Service
                             throw new Exception($"Insufficient quantity for product {orderProduct.ProductName}. Available: {orderProduct.ProductQuantity}, Requested: {orderDetailDto.Quantity}.");
                         }
 
+                        if(orderDetailDto.SelectedPriceType == "WholeSalePrice")
+                        {
+                            orderDetail.Price = orderProduct.ProductWholeSalePrice;
+                        }
+                        else
+                        {
+                            orderDetail.Price = orderProduct.ProductPrice;
+                        }
+
                         orderDetail.TotalPrice = orderDetail.Quantity * orderDetail.Price;
                         subTotalCost += orderDetail.TotalPrice;
 
@@ -86,6 +112,26 @@ namespace MehmanFoods.Service
 
                     newOrder.SubTotalCost = subTotalCost;
                     newOrder.Balance = subTotalCost - newOrder.PaidAmount;
+
+                    if (newOrder == null)
+                    {
+                        throw new Exception("Order is not initialized.");
+                    }
+
+                    if (newOrder.PaidAmount == null || newOrder.SubTotalCost == null)
+                    {
+                        throw new Exception("Order PaidAmount or SubTotalCost is not set.");
+                    }
+
+                    var paymentStatus = await _paymentStatusService.GetPaymentStatusAsync(newOrder.PaidAmount, newOrder.SubTotalCost);
+
+                    if (paymentStatus == null)
+                    {
+                        throw new Exception("Payment status could not be determined.");
+                    }
+
+                    newOrder.PaymentStatus = paymentStatus.Status;
+
                     await _orderRepository.UpdateOrderAsync(newOrder);
 
                     var invoice = new Invoice
@@ -111,14 +157,22 @@ namespace MehmanFoods.Service
             throw new NotImplementedException();
         }
 
-        public Task<IEnumerable<Order>> GetAllOrdersAsync()
+        public async Task<IEnumerable<OrderFetchDto>> GetAllOrdersAsync()
         {
-            throw new NotImplementedException();
+            var orders = await _orderRepository.GetAllOrdersAsync();
+            return _mapper.Map<IEnumerable<OrderFetchDto>>(orders);
         }
 
-        public async Task<Order> GetOrderByIdAsync(int orderId)
+        public async Task<OrderFetchDto> GetOrderByIdAsync(int orderId)
         {
-            return await _orderRepository.GetOrderByIdAsync(orderId);
+            var order = await _orderRepository.GetOrderByIdAsync(orderId);
+
+            if (order == null)
+            {
+                throw new Exception("Order not found");
+            }
+
+            return _mapper.Map<OrderFetchDto>(order);
         }
 
         public Task UpdateOrderAsync(Order order)

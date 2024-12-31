@@ -23,7 +23,7 @@ namespace MehmanFoods.Endpoints.MehmanFoodsControllers
             if (orderCreateDto != null)
             {
                 await _orderService.AddOrderAsync(orderCreateDto);
-                return CreatedAtAction(nameof(GetOrderById), new { id = orderCreateDto.PhoneNumber }, orderCreateDto);
+                return CreatedAtAction(nameof(GetOrderById), new { id = orderCreateDto.OrderId }, orderCreateDto);
             }
             else
             {
@@ -31,7 +31,7 @@ namespace MehmanFoods.Endpoints.MehmanFoodsControllers
             }
         }
 
-        [HttpGet("{id}")]
+        [HttpGet("GetOrderById/{id}")]
         public async Task<ActionResult<ProductCreateDto>> GetOrderById(int id)
         {
             var order = await _orderService.GetOrderByIdAsync(id);
@@ -42,6 +42,20 @@ namespace MehmanFoods.Endpoints.MehmanFoodsControllers
             else
             {
                 return NotFound("order not found");
+            }
+        }
+
+        [HttpGet("Fetch-Orders")]
+        public async Task<ActionResult<OrderFetchDto>> GetAllOrdersAsync(int id)
+        {
+            var orders = await _orderService.GetAllOrdersAsync();
+            if (orders != null)
+            {
+                return Ok(orders);
+            }
+            else
+            {
+                return NotFound("No Order Exist!.");
             }
         }
     }
