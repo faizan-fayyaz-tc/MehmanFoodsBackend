@@ -31,15 +31,22 @@ namespace MehmanFoods.Repository
             throw new NotImplementedException();
         }
 
-        public Task<IEnumerable<Order>> GetAllOrdersAsync()
+        public async Task<IEnumerable<Order>> GetAllOrdersAsync()
         {
-            throw new NotImplementedException();
+            return await _context.Orders
+                .Include(o=>o.Customer)
+                .Include(o=>o.OrderDetails)
+                .ThenInclude(od=>od.Product)
+                .ToListAsync();
         }
 
         public async Task<Order> GetOrderByIdAsync(int orderId)
         {
-            var order = await _context.Orders.FirstOrDefaultAsync(o => o.OrderId == orderId);
-            return order;
+            return await _context.Orders
+                .Include(o => o.Customer)
+                .Include(o => o.OrderDetails)
+                .ThenInclude(od => od.Product)
+                .FirstOrDefaultAsync(o => o.OrderId == orderId);
         }
 
         public async Task UpdateOrderAsync(Order order)

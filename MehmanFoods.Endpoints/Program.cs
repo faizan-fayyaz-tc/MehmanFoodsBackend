@@ -64,6 +64,7 @@ static void ConfigureServices(IServiceCollection servicesCollection)
     servicesCollection.AddScoped<IBatchIngredientService, BatchIngredientService>();
     servicesCollection.AddScoped<IIngredientService, IngredientService>();
     servicesCollection.AddScoped<IUnitService, UnitService>();
+    servicesCollection.AddScoped<IPaymentStatusService, PaymentStatusService>();
 
     //Repositories DI
     servicesCollection.AddScoped<IOrderDetailRepository, OrderDetailRepository>();
@@ -78,6 +79,7 @@ static void ConfigureServices(IServiceCollection servicesCollection)
     servicesCollection.AddScoped<IBatchIngredientRepository, BatchIngredientRepository>();
     servicesCollection.AddScoped<IIngredientRespository, IngredientRepository>();
     servicesCollection.AddScoped<IUnitRepository, UnitRepository>();
+    servicesCollection.AddScoped<IPaymentStatusRepository, PaymentStatusRepository>();
 
     servicesCollection.AddAutoMapper(typeof(MehmanFoodsProfiles));
 

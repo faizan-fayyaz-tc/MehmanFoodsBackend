@@ -11,10 +11,10 @@ namespace MehmanFoods.Core.DTOs.Order
 {
     public class OrderCreateDto
     {
-       // public InvoiceDto Invoice { get; set; }
-        public string InvoiceTo { get; set; }
-        public string PhoneNumber { get; set; }
-        public string Location { get; set; }
+        public int OrderId { get; set; }
+        //public string InvoiceTo { get; set; }
+        //public string PhoneNumber { get; set; }
+        //public string Location { get; set; }
         public DateTime CreatedAt { get; set; }
         //public decimal SubTotalCost { get; set; }
         public decimal PaidAmount { get; set; }

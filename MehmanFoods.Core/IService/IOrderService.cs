@@ -11,8 +11,8 @@ namespace MehmanFoods.Core.IService
     public interface IOrderService
     {
         Task AddOrderAsync(OrderCreateDto orderCreateDto);
-        Task<Order> GetOrderByIdAsync(int orderId);
-        Task<IEnumerable<Order>> GetAllOrdersAsync();
+        Task<OrderFetchDto> GetOrderByIdAsync(int orderId);
+        Task<IEnumerable<OrderFetchDto>> GetAllOrdersAsync();
         Task UpdateOrderAsync(Order order);
         Task DeleteOrderAsync(int orderId);
     }
