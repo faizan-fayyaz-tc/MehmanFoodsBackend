@@ -21,7 +21,7 @@ namespace MehmanFoods.Endpoints.MehmanFoodsControllers
             if (customerCreateDto != null)
             {
                 await _customerService.AddCustomerAsync(customerCreateDto);
-                return CreatedAtAction(nameof(GetCustomerByIdAsync), new { id = customerCreateDto.CustomerId }, customerCreateDto);
+                return CreatedAtAction(nameof(GetCustomerById), new { id = customerCreateDto.CustomerId }, customerCreateDto);
             }
             else
             {
@@ -30,7 +30,7 @@ namespace MehmanFoods.Endpoints.MehmanFoodsControllers
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<CustomerFetchDto>> GetCustomerByIdAsync(int id)
+        public async Task<ActionResult<CustomerFetchDto>> GetCustomerById(int id)
         {
             var customer = await _customerService.GetCustomerByIdAsync(id);
             if (customer != null)
@@ -43,7 +43,7 @@ namespace MehmanFoods.Endpoints.MehmanFoodsControllers
             }
         }
 
-        [HttpGet("FetchAllCustomers")]
+        [HttpGet("GetAllCustomers")]
         public async Task<ActionResult<CustomerFetchDto>> GetAllCustomersAsync()
         {
             var customer = await _customerService.GetAllCustomersAsync();
@@ -55,6 +55,20 @@ namespace MehmanFoods.Endpoints.MehmanFoodsControllers
             {
                 return NotFound("customer not found");
             }
+        }
+
+        [HttpPut("UpdateCustomer")]
+        public async Task<ActionResult<CustomerUpdateDto>> UpdateCustomerById([FromBody] CustomerUpdateDto customerUpdateDto)
+        {
+            await _customerService.UpdateCustomerAsync(customerUpdateDto);
+            return Ok(new { success = true, message = "Customer Updated Successfully" });
+        }
+
+        [HttpDelete("DeleteCustomer/{id}")]
+        public async Task<ActionResult> DeleteCustomerById(int id)
+        {
+            await _customerService.DeleteCustomerAsync(id);
+            return Ok(new { success = true, message = "Customer Deleted Successfully" });
         }
     }
 }

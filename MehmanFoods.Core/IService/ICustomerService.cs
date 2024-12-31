@@ -14,7 +14,7 @@ namespace MehmanFoods.Core.IService
         Task AddCustomerAsync(CustomerCreateDto customerCreateDto);
         Task<CustomerFetchDto> GetCustomerByIdAsync(int customerId);
         Task<IEnumerable<CustomerFetchDto>> GetAllCustomersAsync();
-        Task UpdateCustomerAsync(CustomerCreateDto customerCreateDto);
+        Task UpdateCustomerAsync(CustomerUpdateDto customerUpdateDto);
         Task DeleteCustomerAsync(int customerId);
     }
 }
